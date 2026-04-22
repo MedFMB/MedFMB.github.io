@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MedFM-Bench Workshop — ECCV 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0e17;
+    --bg-card: #111827;
+    --bg-card-hover: #1a2338;
+    --surface: #1e293b;
+    --accent: #38bdf8;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --text: #f1f5f9;
+    --text-dim: #94a3b8;
+    --text-muted: #64748b;
+    --border: #1e293b;
+    --gradient-hero: linear-gradient(135deg, #0a0e17 0%, #0f172a 40%, #1a1040 100%);
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 16px;
+    --max-w: 1200px;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ——— NAV ——— */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(10,14,23,.78);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: var(--font-display); font-size: 1.1rem; color: var(--text);
+    text-decoration: none; display: flex; align-items: center; gap: .6rem;
+  }
+  .nav-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .nav-links { display: flex; gap: .25rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-dim); text-decoration: none; font-size: .82rem; font-weight: 500;
+    padding: .45rem .85rem; border-radius: 8px; transition: all .2s;
+    letter-spacing: .02em;
+  }
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.06); }
+
+  /* ——— HERO ——— */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--gradient-hero); position: relative; text-align: center;
+    padding: 6rem 2rem 4rem; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 900px 600px at 20% 40%, rgba(56,189,248,.08), transparent),
+      radial-gradient(ellipse 700px 500px at 80% 60%, rgba(167,139,250,.07), transparent);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    background: linear-gradient(to top, var(--bg), transparent);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    font-family: var(--font-mono); font-size: .72rem; font-weight: 500;
+    color: var(--accent); letter-spacing: .12em; text-transform: uppercase;
+    background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.2);
+    padding: .4rem 1.2rem; border-radius: 100px;
+    margin-bottom: 2rem;
+    animation: fadeInDown .8s ease-out;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.15; font-weight: 400; max-width: 900px;
+    margin-bottom: 1.5rem; position: relative; z-index: 1;
+    animation: fadeInUp .8s ease-out .1s both;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero h1 .highlight { color: var(--accent2); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--text-dim); max-width: 720px;
+    line-height: 1.8; margin-bottom: .75rem;
+    animation: fadeInUp .8s ease-out .2s both;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;
+    margin: 1.5rem 0 2.5rem; animation: fadeInUp .8s ease-out .3s both;
+  }
+  .hero-meta-item {
+    display: flex; align-items: center; gap: .5rem;
+    font-size: .88rem; color: var(--text-dim);
+  }
+  .hero-meta-item svg { width: 18px; height: 18px; opacity: .6; }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeInUp .8s ease-out .4s both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .75rem 1.8rem; border-radius: 10px; font-size: .88rem;
+    font-weight: 600; text-decoration: none; transition: all .25s;
+    font-family: var(--font-body); cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--accent); color: #0a0e17; }
+  .btn-primary:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(56,189,248,.25); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,.15); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* ——— SECTIONS ——— */
+  section { padding: 6rem 2rem; position: relative; }
+  .container { max-width: var(--max-w); margin: 0 auto; }
+  .section-label {
+    font-family: var(--font-mono); font-size: .7rem; font-weight: 500;
+    color: var(--accent); letter-spacing: .15em; text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-desc {
+    color: var(--text-dim); font-size: 1rem; max-width: 750px; line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  /* ——— PILLARS ——— */
+  .pillars-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .pillar-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem; transition: all .3s;
+    position: relative; overflow: hidden;
+  }
+  .pillar-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .pillar-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent), transparent); }
+  .pillar-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .pillar-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent3), transparent); }
+  .pillar-card:hover { background: var(--bg-card-hover); transform: translateY(-3px); }
+  .pillar-num {
+    font-family: var(--font-mono); font-size: .68rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: .75rem;
+  }
+  .pillar-card:nth-child(1) .pillar-num { color: var(--accent); }
+  .pillar-card:nth-child(2) .pillar-num { color: var(--accent2); }
+  .pillar-card:nth-child(3) .pillar-num { color: var(--accent3); }
+  .pillar-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .6rem; }
+  .pillar-card p { color: var(--text-dim); font-size: .85rem; line-height: 1.75; }
+  .pillar-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+  .pillar-tag {
+    font-family: var(--font-mono); font-size: .65rem; padding: .25rem .6rem;
+    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+    border-radius: 6px; color: var(--text-muted); letter-spacing: .02em;
+  }
+
+  /* ——— DATES ——— */
+  .dates-timeline {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .date-item {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.75rem; position: relative;
+    overflow: hidden; transition: all .3s;
+  }
+  .date-item::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  }
+  .date-item:nth-child(1)::before { background: var(--accent); }
+  .date-item:nth-child(2)::before { background: var(--accent2); }
+  .date-item:nth-child(3)::before { background: var(--accent3); }
+  .date-item:nth-child(4)::before { background: var(--accent4); }
+  .date-item:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+  .date-item .date-label {
+    font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: .5rem;
+  }
+  .date-item .date-value {
+    font-family: var(--font-display); font-size: 1.3rem; margin-bottom: .35rem;
+  }
+  .date-item .date-desc { color: var(--text-dim); font-size: .82rem; }
+
+  /* ——— SPEAKERS ——— */
+  .speakers-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  .speaker-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem 1.75rem; text-align: center;
+    transition: all .3s; position: relative; overflow: hidden;
+  }
+  .speaker-card:hover { background: var(--bg-card-hover); border-color: rgba(167,139,250,.2); transform: translateY(-4px); }
+  .speaker-avatar {
+    width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 1.25rem;
+    background: linear-gradient(135deg, var(--surface), var(--bg));
+    border: 2px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.5rem; color: var(--accent);
+  }
+  .speaker-status {
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: var(--font-mono); font-size: .6rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: .2rem .55rem; border-radius: 6px;
+  }
+  .status-confirmed { background: rgba(52,211,153,.12); color: var(--accent3); }
+  .status-tentative { background: rgba(251,146,60,.1); color: var(--accent4); }
+  .speaker-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .3rem; }
+  .speaker-card .affiliation { color: var(--text-dim); font-size: .8rem; line-height: 1.5; margin-bottom: .75rem; }
+  .speaker-card .speaker-bio {
+    font-size: .78rem; color: var(--text-muted); line-height: 1.6;
+    padding-top: .75rem; border-top: 1px solid var(--border);
+    text-align: left;
+  }
+
+  /* ——— SCHEDULE ——— */
+  .schedule-table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .schedule-table th {
+    font-family: var(--font-mono); font-size: .72rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted);
+    text-align: left; padding: 1.25rem 1.5rem;
+    background: rgba(255,255,255,.02); border-bottom: 1px solid var(--border);
+  }
+  .schedule-table td {
+    padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.03);
+    font-size: .88rem; vertical-align: top;
+  }
+  .schedule-table tr:last-child td { border-bottom: none; }
+  .schedule-table tr:hover td { background: rgba(255,255,255,.02); }
+  .schedule-time {
+    font-family: var(--font-mono); font-size: .82rem; color: var(--accent);
+    white-space: nowrap; font-weight: 500;
+  }
+  .schedule-dur {
+    font-family: var(--font-mono); font-size: .68rem; color: var(--text-muted);
+    display: block; margin-top: 2px;
+  }
+  .schedule-type {
+    font-family: var(--font-mono); font-size: .68rem; font-weight: 500;
+    padding: .2rem .6rem; border-radius: 6px; display: inline-block;
+    letter-spacing: .04em;
+  }
+  .type-keynote { background: rgba(56,189,248,.1); color: var(--accent); }
+  .type-oral { background: rgba(167,139,250,.1); color: var(--accent2); }
+  .type-poster { background: rgba(52,211,153,.1); color: var(--accent3); }
+  .type-panel { background: rgba(251,146,60,.1); color: var(--accent4); }
+  .type-break { background: rgba(255,255,255,.05); color: var(--text-muted); }
+
+  /* ——— CFP ——— */
+  .cfp-section {
+    background: linear-gradient(135deg, rgba(56,189,248,.04), rgba(167,139,250,.04));
+    border-top: 1px solid rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+  .cfp-tracks {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem; margin-bottom: 2.5rem;
+  }
+  .track-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem; position: relative; overflow: hidden;
+  }
+  .track-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .track-card:nth-child(1)::before { background: var(--accent); }
+  .track-card:nth-child(2)::before { background: var(--accent2); }
+  .track-label {
+    font-family: var(--font-mono); font-size: .68rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: .75rem;
+  }
+  .track-card:nth-child(1) .track-label { color: var(--accent); }
+  .track-card:nth-child(2) .track-label { color: var(--accent2); }
+  .track-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: .6rem; }
+  .track-card p { color: var(--text-dim); font-size: .85rem; line-height: 1.75; }
+
+  .cfp-topics {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: .75rem;
+  }
+  .cfp-topic {
+    display: flex; align-items: flex-start; gap: .75rem;
+    padding: .85rem 1.1rem; background: rgba(255,255,255,.03);
+    border-radius: 10px; border: 1px solid rgba(255,255,255,.04);
+    font-size: .85rem; color: var(--text-dim); line-height: 1.5;
+  }
+  .cfp-topic .bullet {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    flex-shrink: 0; margin-top: .5rem;
+  }
+
+  /* ——— ORGANIZERS & ADVISORS ——— */
+  .team-section-title {
+    font-size: 1.1rem; font-weight: 600; margin-bottom: 1.25rem;
+    padding-bottom: .75rem; border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .organizers-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  .organizer-card {
+    text-align: center; padding: 1.75rem 1rem;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); transition: all .3s;
+  }
+  .organizer-card:hover { background: var(--bg-card-hover); transform: translateY(-3px); }
+  .organizer-avatar {
+    width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--surface), var(--bg));
+    border: 3px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.6rem; color: var(--accent2);
+    overflow: hidden;
+  }
+  .organizer-avatar img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+  }
+  .organizer-card h3 { font-size: .9rem; font-weight: 600; margin-bottom: .25rem; }
+  .organizer-card .affiliation { color: var(--text-muted); font-size: .76rem; line-height: 1.4; }
+
+  .advisors-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  .advisor-card {
+    text-align: center; padding: 1.75rem 1rem;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); transition: all .3s;
+  }
+  .advisor-card:hover { background: var(--bg-card-hover); transform: translateY(-3px); }
+  .advisor-avatar {
+    width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--surface), var(--bg));
+    border: 3px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.6rem; color: var(--accent3);
+    overflow: hidden;
+  }
+  .advisor-avatar img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+  }
+  .advisor-card h3 { font-size: .9rem; font-weight: 600; margin-bottom: .25rem; }
+  .advisor-card .affiliation { color: var(--text-muted); font-size: .76rem; margin-bottom: .4rem; }
+  .advisor-card .advisor-note { color: var(--text-muted); font-size: .7rem; line-height: 1.5; font-style: italic; }
+
+  /* ——— FOOTER ——— */
+  footer {
+    padding: 3rem 2rem; text-align: center;
+    border-top: 1px solid rgba(255,255,255,.04);
+  }
+  footer p { color: var(--text-muted); font-size: .78rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    section { padding: 4rem 1.25rem; }
+    .hero { padding: 5rem 1.25rem 3rem; }
+    .speakers-grid { grid-template-columns: 1fr 1fr; }
+    .organizers-grid { grid-template-columns: repeat(3, 1fr); }
+    .advisors-grid { grid-template-columns: repeat(3, 1fr); }
+    .schedule-table th, .schedule-table td { padding: .75rem 1rem; }
+  }
+  @media (max-width: 480px) {
+    .speakers-grid { grid-template-columns: 1fr; }
+    .organizers-grid { grid-template-columns: repeat(2, 1fr); }
+    .advisors-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><span class="dot"></span> MedFM-Bench @ ECCV 2026</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#dates">Dates</a></li>
+      <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#cfp">Call for Papers</a></li>
+      <li><a href="#organizers">Organizers</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <div class="hero-badge">ECCV 2026 Workshop &middot; Half-Day &middot; In-Person</div>
+  <h1>
+    <em>Medical Foundation Models</em><br />
+    and <span class="highlight">Benchmarks</span>
+  </h1>
+  <p class="hero-sub">
+    Advancing the co-evolution of medical foundation models and benchmarking &mdash; from pretraining objectives and multimodal alignment to evaluation protocols that diagnose robustness, generalization, and evidence consistency.
+  </p>
+  <div class="hero-meta">
+    <span class="hero-meta-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      October 2026
+    </span>
+    <!-- <span class="hero-meta-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      100&ndash;300 expected attendees
+    </span> -->
+    <span class="hero-meta-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      In conjunction with ECCV 2026
+    </span>
+  </div>
+  <div class="hero-actions">
+    <a href="#cfp" class="btn btn-primary">Submit a Paper</a>
+    <a href="#schedule" class="btn btn-outline">View Program</a>
+  </div>
+</header>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About the Workshop</div>
+    <h2 class="section-title">Why Medical Foundation Models &amp; Benchmarks?</h2>
+    <p class="section-desc">
+      Medical foundation models are rapidly reshaping medical image understanding, enabling stronger generalization and more unified learning across modalities (X-ray, CT, MRI, ultrasound) and tasks such as classification, detection, segmentation, report generation, and multimodal reasoning. A key differentiator of this workshop is the explicit focus on the co-evolution of foundation models and benchmarking &mdash; not only building stronger models, but also establishing evaluation protocols that diagnose robustness, cross-site generalization, and evidence consistency.
+    </p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar I</div>
+        <h3>Foundation Model Design &amp; Learning</h3>
+        <p>Model architectures, large-scale pretraining and self-supervised learning, multimodal learning, alignment, cross-modality reasoning, and efficient fine-tuning and adaptation strategies.</p>
+        <div class="pillar-tags">
+          <span class="pillar-tag">Architectures</span>
+          <span class="pillar-tag">Self-supervised learning</span>
+          <span class="pillar-tag">Multimodal alignment</span>
+          <span class="pillar-tag">Efficient fine-tuning</span>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar II</div>
+        <h3>Data, Scaling &amp; Generalization</h3>
+        <p>Global-scale multi-institution datasets, collaboration frameworks and governance, privacy-preserving learning (federated learning), data curation, domain generalization under distribution shift, robustness, safety, and trustworthiness.</p>
+        <div class="pillar-tags">
+          <span class="pillar-tag">Data scaling</span>
+          <span class="pillar-tag">Federated learning</span>
+          <span class="pillar-tag">Domain shift</span>
+          <span class="pillar-tag">Safety &amp; Trust</span>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar III</div>
+        <h3>Benchmarking &amp; Deployment</h3>
+        <p>Evaluation standards, benchmark design, reproducible protocols, and clinical deployment &mdash; developing emerging benchmarks that diagnose robustness, generalization, and evidence consistency for high-stakes clinical settings.</p>
+        <div class="pillar-tags">
+          <span class="pillar-tag">Benchmarks</span>
+          <span class="pillar-tag">Reproducibility</span>
+          <span class="pillar-tag">Clinical deployment</span>
+          <span class="pillar-tag">Evaluation protocols</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DATES ═══════════ -->
+<section id="dates" style="background: rgba(255,255,255,.01);">
+  <div class="container">
+    <div class="section-label">Mark Your Calendar</div>
+    <h2 class="section-title">Important Dates</h2>
+    <p class="section-desc">All deadlines are at 23:59 Anywhere on Earth (AoE). Dates will be announced soon.</p>
+    <div class="dates-timeline">
+      <div class="date-item">
+        <div class="date-label">Paper Submission</div>
+        <div class="date-value">TBD</div>
+        <div class="date-desc">Regular track and Nectar track submissions via OpenReview.</div>
+      </div>
+      <div class="date-item">
+        <div class="date-label">Notification</div>
+        <div class="date-value">TBD</div>
+        <div class="date-desc">Authors notified of acceptance decisions.</div>
+      </div>
+      <div class="date-item">
+        <div class="date-label">Camera-Ready</div>
+        <div class="date-value">TBD</div>
+        <div class="date-desc">Final manuscripts and supplementary materials due.</div>
+      </div>
+      <div class="date-item">
+        <div class="date-label">Workshop Day</div>
+        <div class="date-value">October 2026</div>
+        <div class="date-desc">Half-day in-person workshop at ECCV 2026.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SPEAKERS ═══════════ -->
+<section id="speakers">
+  <div class="container">
+    <div class="section-label">Keynotes &amp; Invited Talks</div>
+    <h2 class="section-title">Invited Speakers</h2>
+    <p class="section-desc">Leading researchers sharing complementary perspectives on medical foundation models, multimodal reasoning, and clinical AI.</p>
+    <div class="speakers-grid">
+
+      <div class="speaker-card">
+        <span class="speaker-status status-confirmed">Confirmed</span>
+        <div class="speaker-avatar">SA</div>
+        <h3>Shekoofeh Azizi</h3>
+        <p class="affiliation">Google DeepMind</p>
+        <p class="speaker-bio">Staff research scientist and research lead at Google DeepMind. Pioneering the application of LLMs in therapeutics and single-cell biology. Research lead behind the Med-PaLM series and Med-Gemini &mdash; Google's flagship medical LLMs.</p>
+      </div>
+
+      <div class="speaker-card">
+        <span class="speaker-status status-confirmed">Confirmed</span>
+        <div class="speaker-avatar">WX</div>
+        <h3>Weidi Xie</h3>
+        <p class="affiliation">Shanghai Jiao Tong University</p>
+        <p class="speaker-bio">Associate Professor focusing on medical AI and multimodal learning. Creator of LLM-driven agentic systems for rare disease diagnosis (DeepRare) and open-source releases including RadFM, PMC-LLaMA, and MMed-Llama 3.</p>
+      </div>
+
+      <div class="speaker-card">
+        <span class="speaker-status status-tentative">Tentative</span>
+        <div class="speaker-avatar">DR</div>
+        <h3>Daniel Ruckert</h3>
+        <p class="affiliation">TU Munich</p>
+        <p class="speaker-bio">Alexander von Humboldt Professor for AI in Medicine and Healthcare at TUM. Pioneer in deep learning for MR reconstruction. IEEE Fellow, MICCAI Fellow, Fellow of the Royal Academy of Engineering and Academy of Medical Sciences.</p>
+      </div>
+
+      <div class="speaker-card">
+        <span class="speaker-status status-tentative">Tentative</span>
+        <div class="speaker-avatar">MM</div>
+        <h3>Michael Moor</h3>
+        <p class="affiliation">ETH Z&uuml;rich</p>
+        <p class="speaker-bio">Tenure-track Assistant Professor leading research on medical foundation models and ML for healthcare. Lead author of Med-Flamingo, a multimodal medical few-shot vision&ndash;language model, with work on generalist medical foundation model evaluation.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SCHEDULE ═══════════ -->
+<section id="schedule" style="background: rgba(255,255,255,.01);">
+  <div class="container">
+    <div class="section-label">Program</div>
+    <h2 class="section-title">Workshop Schedule</h2>
+    <p class="section-desc">A half-day program with four invited talks, a poster session with coffee break, best-paper oral spotlight, and a closing panel discussion.</p>
+    <table class="schedule-table">
+      <thead>
+        <tr><th>Time</th><th>Event</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="schedule-time">2:00 PM</span><span class="schedule-dur">10 min</span></td>
+          <td><strong>Opening Remarks</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Welcome and workshop overview from the organizers</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">2:10 PM</span><span class="schedule-dur">30 min</span></td>
+          <td><strong>Invited Talk 1</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Speaker to be announced</span></td>
+          <td><span class="schedule-type type-keynote">Keynote</span></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">2:40 PM</span><span class="schedule-dur">30 min</span></td>
+          <td><strong>Invited Talk 2</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Speaker to be announced</span></td>
+          <td><span class="schedule-type type-keynote">Keynote</span></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">3:10 PM</span><span class="schedule-dur">60 min</span></td>
+          <td><strong>&#9749; Poster Session &amp; Coffee Break</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Interactive poster session &mdash; up to 30 posters on display</span></td>
+          <td><span class="schedule-type type-poster">Poster</span></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">4:10 PM</span><span class="schedule-dur">20 min</span></td>
+          <td><strong>Best Paper Oral Spotlight</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Oral presentations from top-scoring submissions</span></td>
+          <td><span class="schedule-type type-oral">Oral</span></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">4:30 PM</span><span class="schedule-dur">30 min</span></td>
+          <td><strong>Invited Talk 3</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Speaker to be announced</span></td>
+          <td><span class="schedule-type type-keynote">Keynote</span></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">5:00 PM</span><span class="schedule-dur">30 min</span></td>
+          <td><strong>Invited Talk 4</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Speaker to be announced</span></td>
+          <td><span class="schedule-type type-keynote">Keynote</span></td>
+        </tr>
+        <tr>
+          <td><span class="schedule-time">5:30 PM</span><span class="schedule-dur">30 min</span></td>
+          <td><strong>Panel Discussion</strong><br/><span style="color:var(--text-muted); font-size:.82rem;">Open discussion on the future of medical foundation models &amp; benchmarks</span></td>
+          <td><span class="schedule-type type-panel">Panel</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ CALL FOR PAPERS ═══════════ -->
+<section id="cfp" class="cfp-section">
+  <div class="container">
+    <div class="section-label">Call for Papers</div>
+    <h2 class="section-title">Submit Your Work</h2>
+    <p class="section-desc">We invite submissions on all topics related to medical foundation models and benchmarking. The workshop features two submission tracks to broaden participation:</p>
+
+    <div class="cfp-tracks">
+      <div class="track-card">
+        <div class="track-label">Regular Track</div>
+        <h3>Peer-Reviewed Papers</h3>
+        <p>Full papers in ECCV format. All papers will be reviewed via a standard double-blind OpenReview workflow by a dedicated program committee. Conflicts of interest handled per ECCV workshop policies. Accepted papers included in the workshop program for poster presentation.</p>
+      </div>
+      <div class="track-card">
+        <div class="track-label">Nectar Track</div>
+        <h3>Already Published Work</h3>
+        <p>Papers already published and peer-reviewed at major CV/ML conferences or journals. Submissions will not be re-reviewed &mdash; the main criteria are topical fit and poster-board availability. Authors submit a link to the paper via the workshop's OpenReview page.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1rem; font-weight:600; margin-bottom:1.25rem;">Topics of Interest</h3>
+    <div class="cfp-topics">
+      <div class="cfp-topic"><span class="bullet"></span>Model architectures for medical foundation models</div>
+      <div class="cfp-topic"><span class="bullet"></span>Large-scale pretraining and self-supervised learning</div>
+      <div class="cfp-topic"><span class="bullet"></span>Multimodal learning, alignment, and cross-modality reasoning</div>
+      <div class="cfp-topic"><span class="bullet"></span>Efficient fine-tuning and adaptation strategies</div>
+      <div class="cfp-topic"><span class="bullet"></span>Global-scale, multi-institution datasets and data curation</div>
+      <div class="cfp-topic"><span class="bullet"></span>Privacy-preserving and federated learning</div>
+      <div class="cfp-topic"><span class="bullet"></span>Domain generalization and adaptation under distribution shift</div>
+      <div class="cfp-topic"><span class="bullet"></span>Robustness, safety, and trustworthiness</div>
+      <div class="cfp-topic"><span class="bullet"></span>Benchmark design, evaluation standards, and reproducible protocols</div>
+      <div class="cfp-topic"><span class="bullet"></span>Clinical deployment and integration</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ORGANIZERS ═══════════ -->
+<section id="organizers">
+  <div class="container">
+    <div class="section-label">Workshop Team</div>
+    <h2 class="section-title">Organizers &amp; Advisors</h2>
+    <p class="section-desc">A diverse team spanning seven institutions across North America, Europe, and Australia, with experience organizing workshops at CVPR, ICCV, and MICCAI.</p>
+
+    <h3 class="team-section-title">Organizers</h3>
+    <div class="organizers-grid" style="margin-bottom: 3rem;">
+      <div class="organizer-card">
+        <div class="organizer-avatar">XH</div>
+        <h3>Xiangteng He</h3>
+        <p class="affiliation">University of British Columbia</p>
+      </div>
+      <div class="organizer-card">
+        <div class="organizer-avatar">XS</div>
+        <h3>Xiaoxiao Sun</h3>
+        <p class="affiliation">Stanford University</p>
+      </div>
+      <div class="organizer-card">
+        <div class="organizer-avatar">KY</div>
+        <h3>Kun Yuan</h3>
+        <p class="affiliation">TU Munich /<br/>U. of Strasbourg</p>
+      </div>
+      <div class="organizer-card">
+        <div class="organizer-avatar">MH</div>
+        <h3>Ming Hu</h3>
+        <p class="affiliation">Monash University</p>
+      </div>
+      <div class="organizer-card">
+        <div class="organizer-avatar">CZ</div>
+        <h3>Congyi Zhang</h3>
+        <p class="affiliation">UT Dallas</p>
+      </div>
+      <div class="organizer-card">
+        <div class="organizer-avatar">YZ</div>
+        <h3>Yuhui Zhang</h3>
+        <p class="affiliation">Stanford University</p>
+      </div>
+      <div class="organizer-card">
+        <div class="organizer-avatar">BK</div>
+        <h3>Benjamin D. Killeen</h3>
+        <p class="affiliation">TU Munich</p>
+      </div>
+    </div>
+
+    <h3 class="team-section-title">Advisory Board</h3>
+    <div class="advisors-grid">
+      <div class="advisor-card">
+        <div class="advisor-avatar">NN</div>
+        <h3>Nassir Navab</h3>
+        <p class="affiliation">TU Munich</p>
+        <p class="advisor-note">Founding chair of MICCAI Society &middot; Academia Europaea &middot; MICCAI Enduring Impact Award</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">NP</div>
+        <h3>Nicolas Padoy</h3>
+        <p class="affiliation">University of Strasbourg</p>
+        <p class="advisor-note">Surgical data science &amp; multimodal AI &middot; General Chair, IPCAI &middot; MICCAI Fellow</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">SY</div>
+        <h3>Serena Yeung-Levy</h3>
+        <p class="affiliation">Stanford University</p>
+        <p class="advisor-note">CV/ML for healthcare &middot; Program Chair NeurIPS D&amp;B &rsquo;21 &middot; CVPR Workshops Chair &rsquo;23</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">ZG</div>
+        <h3>Zongyuan Ge</h3>
+        <p class="affiliation">Monash University</p>
+        <p class="advisor-note">Medical AI &amp; computer-aided diagnosis &middot; NVIDIA AI Fellow &middot; Bellberry-Viertel Fellow</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">PA</div>
+        <h3>Purang Abolmaesumi</h3>
+        <p class="affiliation">University of British Columbia</p>
+        <p class="advisor-note">Medical imaging &middot; MICCAI Program Chair &rsquo;20 &middot; Workshop/Tutorial Chair &rsquo;11, &rsquo;15</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">LS</div>
+        <h3>Leonid Sigal</h3>
+        <p class="affiliation">University of British Columbia</p>
+        <p class="advisor-note">Computer vision &amp; multimodal learning &middot; CIFAR AI Chair &middot; PixFoundations (CVPR &rsquo;25)</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">AY</div>
+        <h3>Alan L. Yuille</h3>
+        <p class="affiliation">Johns Hopkins University</p>
+        <p class="advisor-note">Computer vision &amp; medical image analysis &middot; CVPR Program Chair &rsquo;12</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RELATED ═══════════ -->
+<!-- <section style="background: rgba(255,255,255,.01);">
+  <div class="container">
+    <div class="section-label">Context</div>
+    <h2 class="section-title">Related Workshops</h2>
+    <p class="section-desc">Building on and complementing growing interest in medical foundation models across the vision community.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: .75rem;">
+      <div class="cfp-topic"><span class="bullet" style="background:var(--accent2)"></span>MMFM-BIOMED &mdash; CVPR 2025</div>
+      <div class="cfp-topic"><span class="bullet" style="background:var(--accent2)"></span>Foundation Models for Medical Vision (FMMV) &mdash; CVPR 2024&ndash;2025</div>
+      <div class="cfp-topic"><span class="bullet" style="background:var(--accent2)"></span>Medical Computer Vision (MCV) &mdash; CVPR 2022&ndash;2025</div>
+      <div class="cfp-topic"><span class="bullet" style="background:var(--accent2)"></span>Computer Vision for Microscopy (CVMI) &mdash; CVPR 2022&ndash;2025</div>
+      <div class="cfp-topic"><span class="bullet" style="background:var(--accent2)"></span>BioImage Computing (BIC) &mdash; ECCV 2024, ICCV 2025</div>
+      <div class="cfp-topic"><span class="bullet" style="background:var(--accent2)"></span>CV for Automated Medical Diagnosis (CVAMD) &mdash; ICCV 2023, 2025</div>
+    </div>
+  </div>
+</section> -->
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <p style="margin-bottom:.5rem;">
+    <strong style="color:var(--text-dim);">Medical Foundation Models and Benchmarks (MedFM-Bench)</strong> &mdash; In conjunction with ECCV 2026
+  </p>
+  <p>
+    Contact: <a href="mailto:xiangteng.he@ubc.ca">xiangteng.he@ubc.ca</a>
+  </p>
+  <p style="margin-top:.75rem;">&copy; 2026 MedFM-Bench Workshop. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
