@@ -227,6 +227,20 @@
     margin-bottom: .3rem; color: var(--navy);
   }
   .date-item .date-desc { color: var(--text-dim); font-size: .78rem; line-height: 1.6; }
+  .date-countdown {
+    margin-top: .75rem; padding-top: .65rem; border-top: 1px dashed var(--border-light);
+    font-family: var(--font-mono); font-size: .72rem; font-weight: 500;
+    color: var(--teal); display: flex; align-items: center; gap: .4rem;
+  }
+  .date-countdown.passed { color: var(--text-muted); font-weight: 400; }
+  .date-countdown.tbd { color: var(--text-muted); font-style: italic; }
+  .date-countdown .cd-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+    animation: cdPulse 1.6s ease-in-out infinite;
+  }
+  .date-countdown.passed .cd-dot,
+  .date-countdown.tbd .cd-dot { animation: none; opacity: .4; }
+  @keyframes cdPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.7)} }
 
   /* ——— AVATAR (unified) ——— */
   .avatar {
@@ -492,10 +506,10 @@
     <h2 class="section-title">Important Dates</h2>
     <p class="section-desc">All deadlines are at 23:59 Anywhere on Earth (AoE). Dates will be announced soon.</p>
     <div class="dates-timeline">
-      <div class="date-item"><div class="date-label">Paper Submission</div><div class="date-value">Jun 10'26 11:59 PM (AoE)</div><div class="date-desc">Regular track and Nectar track submissions via OpenReview.</div></div>
-      <div class="date-item"><div class="date-label">Notification</div><div class="date-value">Jul 3'26 11:59 PM (AoE)</div><div class="date-desc">Authors notified of acceptance decisions.</div></div>
-      <div class="date-item"><div class="date-label">Camera-Ready</div><div class="date-value">TBD</div><div class="date-desc">Final manuscripts and supplementary materials due.</div></div>
-      <div class="date-item"><div class="date-label">Workshop Day</div><div class="date-value">8–9 Sep 2026</div><div class="date-desc">Half-day in-person workshop at ECCV 2026.</div></div>
+      <div class="date-item" data-deadline="2026-06-11T11:59:00Z"><div class="date-label">Paper Submission</div><div class="date-value">Jun 10'26 11:59 PM (AoE)</div><div class="date-desc">Regular track and Nectar track submissions via OpenReview.</div><div class="date-countdown"><span class="cd-dot"></span><span class="cd-text">—</span></div></div>
+      <div class="date-item" data-deadline="2026-07-04T11:59:00Z"><div class="date-label">Notification</div><div class="date-value">Jul 3'26 11:59 PM (AoE)</div><div class="date-desc">Authors notified of acceptance decisions.</div><div class="date-countdown"><span class="cd-dot"></span><span class="cd-text">—</span></div></div>
+      <div class="date-item"><div class="date-label">Camera-Ready</div><div class="date-value">TBD</div><div class="date-desc">Final manuscripts and supplementary materials due.</div><div class="date-countdown tbd"><span class="cd-dot"></span><span class="cd-text">Date to be announced</span></div></div>
+      <div class="date-item" data-deadline="2026-09-08T00:00:00Z" data-cd-suffix="until workshop" data-cd-passed="Workshop in session / concluded"><div class="date-label">Workshop Day</div><div class="date-value">8–9 Sep 2026</div><div class="date-desc">Half-day in-person workshop at ECCV 2026.</div><div class="date-countdown"><span class="cd-dot"></span><span class="cd-text">—</span></div></div>
     </div>
   </div>
 </section>
@@ -599,9 +613,15 @@
     <h2 class="section-title">Submit Your Work</h2>
     <p class="section-desc">We invite submissions on all topics related to medical foundation models and benchmarking. The workshop features two submission tracks to broaden participation:</p>
     <div class="cfp-tracks">
-      <div class="track-card"><div class="track-label">Regular Track</div><h3>Peer-Reviewed Papers</h3><p>Full papers in ECCV format. All papers will be reviewed via a standard double-blind OpenReview workflow by a dedicated program committee. Conflicts of interest handled per ECCV workshop policies. Accepted papers included in the workshop program for poster presentation.</p></div>
-      <div class="track-card"><div class="track-label">Nectar Track</div><h3>Already Published Work</h3><p>Papers already published and peer-reviewed at major CV/ML conferences or journals. Submissions will not be re-reviewed &mdash; the main criteria are topical fit and poster-board availability. Authors submit a link to the paper via the workshop's OpenReview page.</p></div>
+      <div class="track-card" data-deadline="2026-06-11T11:59:00Z" data-cd-suffix="until submission closes"><div class="track-label">Regular Track</div><h3>Peer-Reviewed Papers</h3><p>Full papers in ECCV format. All papers will be reviewed via a standard double-blind OpenReview workflow by a dedicated program committee. Conflicts of interest handled per ECCV workshop policies. Accepted papers included in the workshop program for poster presentation.</p><p style="margin-top:.9rem;font-family:var(--font-mono);font-size:.78rem;color:var(--rust);font-weight:500">Submission deadline: Jun 10'26 11:59 PM (AoE)</p><div class="date-countdown"><span class="cd-dot"></span><span class="cd-text">—</span></div></div>
+      <div class="track-card" data-deadline="2026-06-18T11:59:00Z" data-cd-suffix="until submission closes"><div class="track-label">Nectar Track</div><h3>Already Published Work</h3><p>Papers already published and peer-reviewed at major CV/ML conferences or journals. Submissions will not be re-reviewed &mdash; the main criteria are topical fit and poster-board availability. Authors submit a link to the paper via the workshop's OpenReview page.</p><p style="margin-top:.9rem;font-family:var(--font-mono);font-size:.78rem;color:var(--rust);font-weight:500">Submission deadline: Jun 17'26 11:59 PM (AoE)</p><div class="date-countdown"><span class="cd-dot"></span><span class="cd-text">—</span></div></div>
     </div>
+
+    <h3 style="font-size:.95rem;font-weight:600;margin-bottom:1.1rem;color:var(--navy)">Review Process &amp; Formatting</h3>
+    <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin-bottom:2.5rem;box-shadow:var(--shadow-sm);color:var(--text-dim);font-size:.86rem;line-height:1.85">
+      All submissions undergo <strong style="color:var(--navy);font-weight:600">double-blind review</strong> by program-committee members from academia and industry. Unpublished <strong style="color:var(--navy);font-weight:600">Regular Track</strong> papers that comply with the official ECCV 2026 policies may be included in the ECCV 2026 Workshop Proceedings or presented in a non-archival format at the authors' choice. <strong style="color:var(--navy);font-weight:600">Nectar Track</strong> papers (already published or under review elsewhere) are presented non-archivally only and will not appear in the proceedings. Submissions must be in English, submitted as a single PDF, and follow the official <a href="https://eccv.ecva.net/Conferences/2026/SubmissionPolicies" target="_blank" rel="noopener" style="color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid var(--teal-light)">ECCV 2026 author kit</a> (LaTeX template provided). Papers should be 7–14 pages excluding references.
+    </div>
+
     <h3 style="font-size:.95rem;font-weight:600;margin-bottom:1.1rem;color:var(--navy)">Topics of Interest</h3>
     <div class="cfp-topics">
       <div class="cfp-topic"><span class="bullet"></span>Model architectures for medical foundation models</div>
@@ -802,6 +822,41 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+
+  (function () {
+    const items = document.querySelectorAll('[data-deadline]');
+    if (!items.length) return;
+    function fmt(ms, suffix) {
+      const sec = Math.floor(ms / 1000);
+      const d = Math.floor(sec / 86400);
+      const h = Math.floor((sec % 86400) / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      if (d > 0) return `${d}d ${h}h ${m}m ${s}s ${suffix}`;
+      return `${h}h ${m}m ${s}s ${suffix}`;
+    }
+    function tick() {
+      const now = Date.now();
+      items.forEach(item => {
+        const cd = item.querySelector('.date-countdown');
+        if (!cd) return;
+        const txt = cd.querySelector('.cd-text');
+        const target = new Date(item.dataset.deadline).getTime();
+        const suffix = item.dataset.cdSuffix || 'remaining';
+        const passedText = item.dataset.cdPassed || 'Deadline passed';
+        const diff = target - now;
+        if (diff <= 0) {
+          cd.classList.add('passed');
+          txt.textContent = passedText;
+        } else {
+          cd.classList.remove('passed');
+          txt.textContent = fmt(diff, suffix);
+        }
+      });
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
 </script>
 </body>
 </html>
