@@ -174,6 +174,121 @@
     background: var(--teal); border-radius: 2px; margin-top: .75rem;
   }
 
+  /* ——— News / Latest Updates ——— */
+  .news-section {
+    padding-top: 4rem;
+    padding-bottom: 0;
+  }
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: .85rem;
+    margin-top: 1.25rem;
+  }
+  .news-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 1.6rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: all .3s;
+  }
+  .news-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--rust), var(--gold));
+  }
+  .news-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .news-date {
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: .03em;
+    white-space: nowrap;
+    padding-right: 1.4rem;
+    border-right: 1px solid var(--border-light);
+    line-height: 1.5;
+  }
+  .news-date .news-date-day {
+    display: block;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: .82rem;
+    margin-bottom: .15rem;
+  }
+  .news-body {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+  .news-headline {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+  }
+  .news-title {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.35;
+  }
+  .news-badge {
+    font-family: var(--font-mono);
+    font-size: .56rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .18rem .5rem;
+    background: var(--rust);
+    color: #fff;
+    border-radius: 4px;
+    animation: badgePulse 2.4s ease-out infinite;
+  }
+  @keyframes badgePulse {
+    0%   { box-shadow: 0 0 0 0 rgba(180,77,58,.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(180,77,58,0); }
+    100% { box-shadow: 0 0 0 0 rgba(180,77,58,0); }
+  }
+  .news-desc {
+    font-size: .84rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .6rem 1.1rem;
+    background: var(--navy);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  .news-link svg { width: 13px; height: 13px; }
+  .news-link:hover {
+    background: var(--navy-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(27,46,74,.2);
+  }
+
   .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
   .pillar-card {
     background: var(--bg-card); border: 1px solid var(--border-light);
@@ -423,6 +538,18 @@
     section { padding: 4rem 1.25rem; }
     .hero { padding: 5.5rem 1.25rem 3.5rem; }
     .schedule-table th, .schedule-table td { padding: .7rem .9rem; }
+    .news-item {
+      grid-template-columns: 1fr;
+      gap: .9rem;
+      padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    }
+    .news-date {
+      padding-right: 0;
+      padding-bottom: .7rem;
+      border-right: none;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .news-link { justify-self: start; }
   }
   @media (max-width: 480px) {
     .speakers-grid { grid-template-columns: 1fr; }
@@ -437,6 +564,7 @@
   <div class="nav-inner">
     <a href="#" class="nav-logo"><span class="mark">M</span> MedFM-Bench</a>
     <ul class="nav-links">
+      <li><a href="#news">News</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#dates">Dates</a></li>
       <li><a href="#speakers">Speakers</a></li>
@@ -463,12 +591,42 @@
       </span>
     </div>
     <div class="hero-actions">
-      <!-- <a href="#cfp" class="btn btn-primary">Submit a Paper</a> -->
       <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/MEDFMB" target="_blank" rel="noopener" class="btn btn-primary">Submit a Paper</a>
       <a href="#schedule" class="btn btn-outline">View Program</a>
     </div>
   </div>
 </header>
+
+<!-- ═══════════════════ NEWS / LATEST UPDATES ═══════════════════ -->
+<!-- Add new items to the top of .news-list. Newest item gets the .news-badge.
+     When an item is no longer the latest, remove its <span class="news-badge">New</span>. -->
+<section id="news" class="news-section fade-section">
+  <div class="container">
+    <div class="section-label">Latest Updates</div>
+    <div class="news-list">
+
+      <article class="news-item">
+        <div class="news-date">
+          <span class="news-date-day">May 20, 2026</span>
+          GMT−7
+        </div>
+        <div class="news-body">
+          <div class="news-headline">
+            <span class="news-title">Submission portal is now open on OpenReview</span>
+            <span class="news-badge">New</span>
+          </div>
+          <p class="news-desc">Submissions are accepted for both Regular and Nectar tracks.</p>
+        </div>
+        <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/MEDFMB"
+           target="_blank" rel="noopener" class="news-link">
+          Submit now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
 
 <section id="about" class="fade-section">
   <div class="container">
@@ -819,11 +977,13 @@
 </footer>
 
 <script>
+  // ——— Fade-in on scroll ———
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
 
+  // ——— Countdown timers ———
   (function () {
     const items = document.querySelectorAll('[data-deadline]');
     if (!items.length) return;
