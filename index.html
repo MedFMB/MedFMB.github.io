@@ -412,6 +412,24 @@
     height: 14px;
     flex-shrink: 0;
   }
+  .reviewer-note {
+    background: var(--bg-card); border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.35rem;
+    box-shadow: var(--shadow-sm); color: var(--text-dim); font-size: .84rem; line-height: 1.7;
+  }
+  .reviewer-list {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: .75rem; margin-top: .85rem;
+  }
+  .reviewer-item {
+    background: var(--bg-card); border: 1px solid var(--border-light);
+    border-radius: var(--radius-md); padding: .8rem .95rem; box-shadow: var(--shadow-sm);
+  }
+  .reviewer-name {
+    font-family: var(--font-display); font-size: .9rem; font-weight: 600;
+    color: var(--navy); margin-bottom: .2rem;
+  }
+  .reviewer-affiliation { color: var(--text-dim); font-size: .76rem; line-height: 1.45; }
 
   .speakers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
   .speaker-card {
@@ -991,8 +1009,47 @@
       </div>
 
     </div>
-    <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:1rem 1.25rem;box-shadow:var(--shadow-sm);color:var(--text-dim);font-size:.84rem;line-height:1.7">
-      Additional reviewer information will be updated after the review process.
+    <div class="reviewer-note">
+      Wenzhuo Zhou supports OpenReview system email checks and notifications. Additional PC reviewers listed below submitted at least one official review; affiliations marked as pending will be updated after final verification.
+    </div>
+    <div class="reviewer-list">
+      <div class="reviewer-item"><div class="reviewer-name">Allan Kazakov</div><div class="reviewer-affiliation">Bahçeşehir University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Jia He</div><div class="reviewer-affiliation">Microsoft</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Zhiheng Zhang</div><div class="reviewer-affiliation">Technical University of Munich</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Liping Meng</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Jingyi He</div><div class="reviewer-affiliation">Technical University of Munich</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Roshan Kenia</div><div class="reviewer-affiliation">Columbia University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Aoife Gardiner</div><div class="reviewer-affiliation">University College London</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Muhammad Muneeb Afzal</div><div class="reviewer-affiliation">New York University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Bruce Changlong Xu</div><div class="reviewer-affiliation">MAI Superintelligence</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Tim Elsner</div><div class="reviewer-affiliation">RWTH Aachen University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Yonghao Li</div><div class="reviewer-affiliation">ShanghaiTech University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Guoxun Zhang</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Gurucharan Marthi Krishna Kumar</div><div class="reviewer-affiliation">McGill University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Haoyu Li</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Cunhao Zhu</div><div class="reviewer-affiliation">Shandong University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Md Muntaqim Meherab</div><div class="reviewer-affiliation">Daffodil International University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Muhammad Umair Ahmad Khan</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Wang-Chi-Shiun</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Ruinan Jin</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Lingguo Zeng</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Ferran Soler-Guiral</div><div class="reviewer-affiliation">Universitat Jaume I</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Ka Young Kim</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Mei Vaish</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Théo Danielou</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Ruochen Li</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Sebastian Rassmann</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Charles Corbière</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Mingyang Li</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Max Van Puyvelde</div><div class="reviewer-affiliation">Stanford University / Ghent University</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Quoc-Huy Trinh</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Ailar Mahdizadeh</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Lyuyang Wang</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Elena Gensch</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Pranav Sunil</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Mingkang Zhou</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Jiayu Chang</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
+      <div class="reviewer-item"><div class="reviewer-name">Nishchal Sapkota</div><div class="reviewer-affiliation">Affiliation to be confirmed</div></div>
     </div>
   </div>
 </section>
